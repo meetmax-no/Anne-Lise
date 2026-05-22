@@ -179,10 +179,10 @@ export default function Invitation() {
                   initial={{ y: 10 }}
                   animate={{ y: 0 }}
                   transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
-                  className="mt-3 font-sans text-[13px] font-light tracking-wide text-[#B8B1A8] leading-relaxed"
+                  className="mt-3 font-sans text-[14px] font-light tracking-wide text-[#B8B1A8] leading-relaxed"
                   data-testid="invitation-subheading"
                 >
-                  Velg det alternativet som passer deg best.
+                  <span className="text-[#FAF9F6] font-normal">Anne Lise</span> — for å gjøre det lekende lett, har jeg satt opp en liten meny for veien videre. Du bestemmer:
                 </motion.p>
 
                 <motion.div
