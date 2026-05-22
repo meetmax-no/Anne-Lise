@@ -1,10 +1,9 @@
 import { useState } from "react";
-import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, Sparkles, Loader2 } from "lucide-react";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+const TELEGRAM_BOT_TOKEN = process.env.REACT_APP_TELEGRAM_BOT_TOKEN;
+const TELEGRAM_CHAT_ID = process.env.REACT_APP_TELEGRAM_CHAT_ID;
 
 const HERO_IMAGE =
   "https://static.prod-images.emergentagent.com/jobs/d29af1d1-c3d2-4925-a32b-92d1b9a4f5d3/images/d848fc92bed7f80fd4c8ddfa6bc322329bd30e40829c30fb64f3df5ec08ebf01.png";
@@ -55,15 +54,45 @@ export default function Invitation() {
     setSelected(code);
     setStatus("loading");
     setErrorMsg("");
+
+    const labels = {
+      A: "Ja, gleder meg!",
+      B: "Kanskje, fortell meg mer",
+      C: "Nei takk",
+    };
+    const emoji = { A: "🥂", B: "🤔", C: "🙅" }[code] || "✉️";
+    const text =
+      `${emoji} <b>Nytt svar på date-invitasjonen</b>\n\n` +
+      `Valg: <b>${code}</b> — ${labels[code]}\n` +
+      `Tidspunkt: ${new Date().toLocaleString("nb-NO")}`;
+
+    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+      setErrorMsg("Telegram er ikke konfigurert ennå.");
+      setStatus("error");
+      return;
+    }
+
     try {
-      await axios.post(`${API}/respond`, { choice: code });
+      const res = await fetch(
+        `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: TELEGRAM_CHAT_ID,
+            text,
+            parse_mode: "HTML",
+          }),
+        }
+      );
+      const data = await res.json();
+      if (!res.ok || !data.ok) {
+        throw new Error(data.description || "Telegram API feilet");
+      }
       setStatus("success");
     } catch (err) {
       console.error(err);
-      setErrorMsg(
-        err?.response?.data?.detail ||
-          "Kunne ikke sende svaret. Prøv igjen om litt."
-      );
+      setErrorMsg("Kunne ikke sende svaret. Prøv igjen om litt.");
       setStatus("error");
     }
   };
