@@ -63,7 +63,7 @@ export default function Invitation() {
       `${emoji} <b>Anne Lise har svart!</b>\n\n` +
       `<b>Valg ${code} — ${choice.title}</b>\n` +
       `<i>"${choice.body}"</i>\n\n` +
-      `🗓 Torsdag 28. mai · kl 18.30\n` +
+      `🗓 Lørdag 30. mai · kl 18.30\n` +
       `🕒 Svart ${now}`;
 
     if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
@@ -176,7 +176,7 @@ export default function Invitation() {
                 >
                   <span className="h-px w-6 bg-[#D4AF37]/60" />
                   <span className="font-sans text-[11px] tracking-[0.28em] uppercase text-[#FAF9F6]">
-                    Torsdag 28. mai · kl 18.30
+                    Lørdag 30. mai · kl 18.30
                   </span>
                   <span className="h-px w-6 bg-[#D4AF37]/60" />
                 </motion.div>
