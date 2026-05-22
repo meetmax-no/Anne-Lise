@@ -140,10 +140,7 @@ export default function Invitation() {
 
         {/* Content block — below image */}
         <div
-          className="px-6 pt-7"
-          style={{
-            paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 32px)",
-          }}
+          className="px-6 pt-7 pb-6"
         >
           <AnimatePresence mode="wait">
             {status !== "success" ? (
@@ -178,7 +175,7 @@ export default function Invitation() {
                   data-testid="invitation-datetime"
                 >
                   <span className="h-px w-6 bg-[#D4AF37]/60" />
-                  <span className="font-sans text-[11px] tracking-[0.28em] uppercase text-[#D4AF37]">
+                  <span className="font-sans text-[11px] tracking-[0.28em] uppercase text-[#FAF9F6]">
                     Torsdag 28. mai · kl 18.30
                   </span>
                   <span className="h-px w-6 bg-[#D4AF37]/60" />
@@ -259,6 +256,18 @@ export default function Invitation() {
             )}
           </AnimatePresence>
         </div>
+
+        {/* Footer */}
+        <footer
+          className="px-6 text-center font-sans text-[10px] tracking-[0.28em] uppercase text-[#FAF9F6]/80"
+          style={{
+            paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 18px)",
+            paddingTop: "8px",
+          }}
+          data-testid="footer"
+        >
+          Ko | Do · Consult © 2026
+        </footer>
       </div>
     </div>
     </MotionConfig>
