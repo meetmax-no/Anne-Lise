@@ -184,6 +184,16 @@ export default function Invitation() {
                 <motion.p
                   initial={{ y: 10 }}
                   animate={{ y: 0 }}
+                  transition={{ delay: 0.26, duration: 0.6, ease: "easeOut" }}
+                  className="mt-2 text-center font-sans text-[12px] tracking-wide text-[#B8B1A8]"
+                  data-testid="invitation-reservation"
+                >
+                  Reservasjon er bekreftet 😀
+                </motion.p>
+
+                <motion.p
+                  initial={{ y: 10 }}
+                  animate={{ y: 0 }}
                   transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
                   className="mt-3 text-center font-sans text-[14px] font-light tracking-wide text-[#B8B1A8] leading-relaxed"
                   data-testid="invitation-subheading"
