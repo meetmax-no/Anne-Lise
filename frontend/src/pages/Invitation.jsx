@@ -49,16 +49,21 @@ export default function Invitation() {
     setStatus("loading");
     setErrorMsg("");
 
-    const titles = {
-      A: "Jeg er optimist!",
-      B: "Den pragmatiske",
-      C: "Angreknappen",
-    };
+    const choice = CHOICES.find((c) => c.code === code);
     const emoji = { A: "🥂", B: "🤝", C: "🤔" }[code] || "✉️";
+    const now = new Date().toLocaleString("nb-NO", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
     const text =
-      `${emoji} <b>Nytt svar på date-invitasjonen</b>\n\n` +
-      `Valg: <b>${code}</b> — ${titles[code]}\n` +
-      `Tidspunkt: ${new Date().toLocaleString("nb-NO")}`;
+      `${emoji} <b>Anne Lise har svart!</b>\n\n` +
+      `<b>Valg ${code} — ${choice.title}</b>\n` +
+      `<i>"${choice.body}"</i>\n\n` +
+      `🗓 Torsdag 28. mai · kl 18.30\n` +
+      `🕒 Svart ${now}`;
 
     if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
       // Test-modus: viser kvittering uten å sende
