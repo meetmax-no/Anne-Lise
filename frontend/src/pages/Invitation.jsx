@@ -158,7 +158,7 @@ export default function Invitation() {
                   initial={{ y: 14 }}
                   animate={{ y: 0 }}
                   transition={{ delay: 0.15, duration: 0.7, ease: "easeOut" }}
-                  className="font-serif font-medium leading-[1.05] tracking-tight text-[#FAF9F6]"
+                  className="text-center font-serif font-medium leading-[1.05] tracking-tight text-[#FAF9F6]"
                   style={{ fontSize: "clamp(1.75rem, 8vw, 2.25rem)" }}
                   data-testid="invitation-heading"
                 >
@@ -173,20 +173,21 @@ export default function Invitation() {
                   initial={{ y: 10 }}
                   animate={{ y: 0 }}
                   transition={{ delay: 0.22, duration: 0.6, ease: "easeOut" }}
-                  className="mt-4 flex items-center gap-3"
+                  className="mt-4 flex items-center justify-center gap-3"
                   data-testid="invitation-datetime"
                 >
                   <span className="h-px w-6 bg-[#D4AF37]/60" />
                   <span className="font-sans text-[11px] tracking-[0.28em] uppercase text-[#D4AF37]">
                     Torsdag 28. mai · kl 18.30
                   </span>
+                  <span className="h-px w-6 bg-[#D4AF37]/60" />
                 </motion.div>
 
                 <motion.p
                   initial={{ y: 10 }}
                   animate={{ y: 0 }}
                   transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
-                  className="mt-3 font-sans text-[14px] font-light tracking-wide text-[#B8B1A8] leading-relaxed"
+                  className="mt-3 text-center font-sans text-[14px] font-light tracking-wide text-[#B8B1A8] leading-relaxed"
                   data-testid="invitation-subheading"
                 >
                   <span className="text-[#FAF9F6] font-normal">Anne Lise</span> — for å gjøre det lekende lett, har jeg satt opp en liten meny for veien videre. Du bestemmer:
