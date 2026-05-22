@@ -162,9 +162,9 @@ export default function Invitation() {
                   style={{ fontSize: "clamp(1.75rem, 8vw, 2.25rem)" }}
                   data-testid="invitation-heading"
                 >
-                  Her kommer det{" "}
+                  Jeg har lyst til å invitere deg på{" "}
                   <em className="italic text-[#D4AF37] font-normal">
-                    en invitasjon
+                    en date
                   </em>
                   .
                 </motion.h1>
