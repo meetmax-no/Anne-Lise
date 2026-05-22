@@ -103,9 +103,10 @@ export default function Invitation() {
       className="relative min-h-[100dvh] w-full bg-[#0A0A0A] text-[#FAF9F6] flex justify-center"
       data-testid="invitation-root"
     >
-      {/* Fixed background layer */}
-      <div className="fixed inset-0 z-0 flex justify-center">
-        <div className="relative w-full max-w-[480px] h-full overflow-hidden">
+      {/* Content frame */}
+      <div className="relative w-full max-w-[480px] flex flex-col">
+        {/* HERO IMAGE — top of page, visible */}
+        <div className="relative w-full overflow-hidden" style={{ aspectRatio: "4 / 5" }}>
           <motion.img
             src={HERO_IMAGE}
             alt="Sushi-restaurant"
@@ -115,49 +116,34 @@ export default function Invitation() {
             transition={{ duration: 1.6, ease: "easeOut" }}
             draggable={false}
           />
-          {/* Strong gradient — heavier at bottom so cards are readable */}
+          {/* Fade to background at the bottom of image */}
           <div
-            className="absolute inset-0"
+            className="absolute inset-x-0 bottom-0 h-32 pointer-events-none"
             style={{
               background:
-                "linear-gradient(to top, rgba(10,10,10,0.97) 0%, rgba(10,10,10,0.92) 30%, rgba(10,10,10,0.7) 55%, rgba(10,10,10,0.35) 80%, rgba(10,10,10,0.15) 100%)",
+                "linear-gradient(to top, #0A0A0A 0%, rgba(10,10,10,0) 100%)",
             }}
           />
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                "radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.5) 100%)",
-            }}
-          />
+          {/* Top mark */}
+          <motion.div
+            initial={{ y: -4 }}
+            animate={{ y: 0 }}
+            transition={{ delay: 0.1, duration: 0.6 }}
+            className="absolute left-0 right-0 flex items-center justify-center gap-2 text-[#D4AF37]"
+            style={{ top: "calc(env(safe-area-inset-top, 0px) + 22px)" }}
+          >
+            <Sparkles size={12} strokeWidth={1.5} />
+            <span className="font-sans text-[10px] tracking-[0.32em] uppercase opacity-95 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
+              En invitasjon
+            </span>
+          </motion.div>
         </div>
-      </div>
 
-      {/* Content frame */}
-      <div className="relative z-10 w-full max-w-[480px] flex flex-col min-h-[100dvh]">
-        {/* Top mark */}
-        <motion.div
-          initial={{ y: -4 }}
-          animate={{ y: 0 }}
-          transition={{ delay: 0.1, duration: 0.6 }}
-          className="flex items-center justify-center gap-2 text-[#D4AF37]"
-          style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 22px)" }}
-        >
-          <Sparkles size={12} strokeWidth={1.5} />
-          <span className="font-sans text-[10px] tracking-[0.32em] uppercase opacity-90">
-            En invitasjon
-          </span>
-        </motion.div>
-
-        {/* Push content toward bottom on tall screens */}
-        <div className="flex-1" />
-
-        {/* Content block */}
+        {/* Content block — below image */}
         <div
-          className="px-6"
+          className="px-6 -mt-6"
           style={{
-            paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 28px)",
-            paddingTop: "32px",
+            paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 32px)",
           }}
         >
           <AnimatePresence mode="wait">
@@ -173,8 +159,8 @@ export default function Invitation() {
                   initial={{ y: 14 }}
                   animate={{ y: 0 }}
                   transition={{ delay: 0.15, duration: 0.7, ease: "easeOut" }}
-                  className="font-serif font-medium leading-[1.02] tracking-tight text-[#FAF9F6] drop-shadow"
-                  style={{ fontSize: "clamp(1.875rem, 8.5vw, 2.375rem)" }}
+                  className="font-serif font-medium leading-[1.05] tracking-tight text-[#FAF9F6]"
+                  style={{ fontSize: "clamp(1.75rem, 8vw, 2.25rem)" }}
                   data-testid="invitation-heading"
                 >
                   Her kommer det{" "}
@@ -184,10 +170,20 @@ export default function Invitation() {
                   .
                 </motion.h1>
 
+                <motion.p
+                  initial={{ y: 10 }}
+                  animate={{ y: 0 }}
+                  transition={{ delay: 0.25, duration: 0.6, ease: "easeOut" }}
+                  className="mt-3 font-sans text-[13px] font-light tracking-wide text-[#B8B1A8] leading-relaxed"
+                  data-testid="invitation-subheading"
+                >
+                  Velg det alternativet som passer deg best.
+                </motion.p>
+
                 <motion.div
                   initial={{ y: 10 }}
                   animate={{ y: 0 }}
-                  transition={{ delay: 0.3, duration: 0.65, ease: "easeOut" }}
+                  transition={{ delay: 0.35, duration: 0.6, ease: "easeOut" }}
                   className="mt-6 flex flex-col gap-3"
                 >
                   {CHOICES.map((c) => (
@@ -219,7 +215,7 @@ export default function Invitation() {
                 animate={{ y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.55, ease: "easeOut" }}
-                className="flex flex-col items-start gap-3 p-6 bg-black/55 backdrop-blur-xl border border-white/10 rounded-lg"
+                className="mt-4 flex flex-col items-start gap-3 p-6 bg-white/[0.04] border border-white/10 rounded-lg"
                 data-testid="success-message"
               >
                 <div className="flex items-center gap-2 text-[#D4AF37]">
@@ -230,11 +226,11 @@ export default function Invitation() {
                 </div>
                 <h2
                   className="font-serif font-medium tracking-tight leading-tight text-[#FAF9F6]"
-                  style={{ fontSize: "clamp(1.75rem, 7.5vw, 2.125rem)" }}
+                  style={{ fontSize: "clamp(1.625rem, 7vw, 2rem)" }}
                 >
                   {SUCCESS_COPY[selected]?.title}
                 </h2>
-                <p className="font-sans text-[15px] font-light text-[#B8B1A8] leading-relaxed">
+                <p className="font-sans text-[14px] font-light text-[#B8B1A8] leading-relaxed">
                   {SUCCESS_COPY[selected]?.body}
                 </p>
                 <button
@@ -317,22 +313,21 @@ function ChoiceCard({ choice, onClick, loading, disabled }) {
         onClick={onClick}
         disabled={disabled}
         data-testid={choice.testid}
-        className={`mt-4 w-full rounded-md py-3 px-4 flex items-center justify-center gap-2 transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-60 touch-manipulation select-none ${btnStyle}`}
-        style={{ minHeight: 48 }}
+        className={`mt-4 inline-flex items-center gap-2 rounded-full py-2 px-4 transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-60 touch-manipulation select-none self-start ${btnStyle}`}
       >
         {loading ? (
           <>
-            <Loader2 size={15} className="animate-spin" />
-            <span className="font-sans text-[12px] font-semibold tracking-[0.16em] uppercase">
-              Sender …
+            <Loader2 size={13} className="animate-spin" />
+            <span className="font-sans text-[11px] font-semibold tracking-[0.16em] uppercase">
+              Sender
             </span>
           </>
         ) : (
           <>
-            <span className="font-sans text-[12px] font-semibold tracking-[0.16em] uppercase">
+            <span className="font-sans text-[11px] font-semibold tracking-[0.16em] uppercase">
               {btnLabel}
             </span>
-            <ArrowUpRight size={15} className="opacity-80" />
+            <ArrowUpRight size={13} className="opacity-80" />
           </>
         )}
       </motion.button>
