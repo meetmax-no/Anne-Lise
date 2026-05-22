@@ -1,47 +1,41 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Sparkles, Loader2 } from "lucide-react";
+import { motion, AnimatePresence, MotionConfig } from "framer-motion";
+import { ArrowUpRight, Sparkles, Loader2, RotateCcw } from "lucide-react";
 
 const TELEGRAM_BOT_TOKEN = process.env.REACT_APP_TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHAT_ID = process.env.REACT_APP_TELEGRAM_CHAT_ID;
 
 const HERO_IMAGE =
-  "https://static.prod-images.emergentagent.com/jobs/d29af1d1-c3d2-4925-a32b-92d1b9a4f5d3/images/d848fc92bed7f80fd4c8ddfa6bc322329bd30e40829c30fb64f3df5ec08ebf01.png";
+  "https://customer-assets.emergentagent.com/job_date-decision/artifacts/fbbrzk35_AlexSushi.jpg";
 
 const CHOICES = [
   {
     code: "A",
-    label: "Ja, gleder meg!",
+    title: "Jeg er optimist!",
+    body: "Du henter meg, og så drar vi rett på en skikkelig date sammen.",
     testid: "btn-accept",
     variant: "primary",
   },
   {
     code: "B",
-    label: "Kanskje, fortell meg mer",
+    title: "Den pragmatiske",
+    body: "Jeg skal inn til Oslo på onsdag for å hente Max. Vi møtes på Kadettangen for en rusletur. Stemmer kjemien, tar vi en ordentlig date dagen etter.",
     testid: "btn-maybe",
     variant: "secondary",
   },
   {
     code: "C",
-    label: "Nei takk",
+    title: "Angreknappen",
+    body: "Ikke helt sikker, jeg må tenke litt — sorry! (Helt innafor, null stress.)",
     testid: "btn-decline",
     variant: "tertiary",
   },
 ];
 
 const SUCCESS_COPY = {
-  A: {
-    title: "Så fint!",
-    body: "Svaret er sendt. Jeg sier ifra om tid og sted snart.",
-  },
-  B: {
-    title: "Greit, jeg forteller mer.",
-    body: "Svaret er sendt. Jeg melder fra med flere detaljer.",
-  },
-  C: {
-    title: "Takk for ærligheten.",
-    body: "Svaret er sendt. Ha en fin kveld likevel.",
-  },
+  A: { title: "Så fint!", body: "Svaret er sendt. Jeg henter deg — detaljer kommer på Telegram." },
+  B: { title: "Avtale!", body: "Svaret er sendt. Vi sees på Kadettangen onsdag — jeg bekrefter tid." },
+  C: { title: "Helt innafor.", body: "Svaret er sendt. Ta deg den tiden du trenger. 🙏" },
 };
 
 export default function Invitation() {
@@ -55,15 +49,15 @@ export default function Invitation() {
     setStatus("loading");
     setErrorMsg("");
 
-    const labels = {
-      A: "Ja, gleder meg!",
-      B: "Kanskje, fortell meg mer",
-      C: "Nei takk",
+    const titles = {
+      A: "Jeg er optimist!",
+      B: "Den pragmatiske",
+      C: "Angreknappen",
     };
-    const emoji = { A: "🥂", B: "🤔", C: "🙅" }[code] || "✉️";
+    const emoji = { A: "🥂", B: "🤝", C: "🤔" }[code] || "✉️";
     const text =
       `${emoji} <b>Nytt svar på date-invitasjonen</b>\n\n` +
-      `Valg: <b>${code}</b> — ${labels[code]}\n` +
+      `Valg: <b>${code}</b> — ${titles[code]}\n` +
       `Tidspunkt: ${new Date().toLocaleString("nb-NO")}`;
 
     if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
@@ -104,87 +98,102 @@ export default function Invitation() {
   };
 
   return (
+    <MotionConfig reducedMotion="never">
     <div
-      className="relative h-[100dvh] w-full overflow-hidden bg-[#0A0A0A] text-[#FAF9F6]"
+      className="relative min-h-[100dvh] w-full bg-[#0A0A0A] text-[#FAF9F6] flex justify-center"
       data-testid="invitation-root"
     >
-      {/* Hero background */}
-      <motion.img
-        src={HERO_IMAGE}
-        alt="Eksklusiv sushi-bar"
-        className="absolute inset-0 h-full w-full object-cover"
-        initial={{ opacity: 0, scale: 1.05 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.6, ease: "easeOut" }}
-        draggable={false}
-      />
+      {/* Fixed background layer */}
+      <div className="fixed inset-0 z-0 flex justify-center">
+        <div className="relative w-full max-w-[480px] h-full overflow-hidden">
+          <motion.img
+            src={HERO_IMAGE}
+            alt="Sushi-restaurant"
+            className="absolute inset-0 h-full w-full object-cover object-center"
+            initial={{ scale: 1.06 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1.6, ease: "easeOut" }}
+            draggable={false}
+          />
+          {/* Strong gradient — heavier at bottom so cards are readable */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(to top, rgba(10,10,10,0.97) 0%, rgba(10,10,10,0.92) 30%, rgba(10,10,10,0.7) 55%, rgba(10,10,10,0.35) 80%, rgba(10,10,10,0.15) 100%)",
+            }}
+          />
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.5) 100%)",
+            }}
+          />
+        </div>
+      </div>
 
-      {/* Gradient overlay */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(to top, rgba(10,10,10,1) 0%, rgba(10,10,10,0.85) 35%, rgba(10,10,10,0.45) 65%, rgba(10,10,10,0.25) 100%)",
-        }}
-      />
+      {/* Content frame */}
+      <div className="relative z-10 w-full max-w-[480px] flex flex-col min-h-[100dvh]">
+        {/* Top mark */}
+        <motion.div
+          initial={{ y: -4 }}
+          animate={{ y: 0 }}
+          transition={{ delay: 0.1, duration: 0.6 }}
+          className="flex items-center justify-center gap-2 text-[#D4AF37]"
+          style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 22px)" }}
+        >
+          <Sparkles size={12} strokeWidth={1.5} />
+          <span className="font-sans text-[10px] tracking-[0.32em] uppercase opacity-90">
+            En invitasjon
+          </span>
+        </motion.div>
 
-      {/* Top corner mark */}
-      <motion.div
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2, duration: 0.8 }}
-        className="absolute top-6 left-6 sm:top-10 sm:left-12 z-10 flex items-center gap-2 text-[#D4AF37]"
-      >
-        <Sparkles size={14} strokeWidth={1.5} />
-        <span className="font-sans text-xs tracking-[0.3em] uppercase opacity-90">
-          En invitasjon
-        </span>
-      </motion.div>
+        {/* Push content toward bottom on tall screens */}
+        <div className="flex-1" />
 
-      {/* Content block bottom-left */}
-      <div className="relative z-10 flex h-full w-full flex-col justify-end p-6 sm:p-12 pb-12 sm:pb-16">
-        <div className="max-w-xl">
+        {/* Content block */}
+        <div
+          className="px-6"
+          style={{
+            paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 28px)",
+            paddingTop: "32px",
+          }}
+        >
           <AnimatePresence mode="wait">
             {status !== "success" ? (
               <motion.div
                 key="idle"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.6 }}
+                initial={{ y: 8 }}
+                animate={{ y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.5 }}
               >
                 <motion.h1
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4, duration: 0.9, ease: "easeOut" }}
-                  className="font-serif text-4xl sm:text-5xl lg:text-6xl font-medium leading-[1.05] tracking-tight text-[#FAF9F6] drop-shadow"
+                  initial={{ y: 14 }}
+                  animate={{ y: 0 }}
+                  transition={{ delay: 0.15, duration: 0.7, ease: "easeOut" }}
+                  className="font-serif font-medium leading-[1.02] tracking-tight text-[#FAF9F6] drop-shadow"
+                  style={{ fontSize: "clamp(1.875rem, 8.5vw, 2.375rem)" }}
                   data-testid="invitation-heading"
                 >
-                  Her kommer det <em className="italic text-[#D4AF37] font-normal">en invitasjon</em>.
+                  Her kommer det{" "}
+                  <em className="italic text-[#D4AF37] font-normal">
+                    en invitasjon
+                  </em>
+                  .
                 </motion.h1>
 
-                <motion.p
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.65, duration: 0.8, ease: "easeOut" }}
-                  className="mt-5 sm:mt-6 max-w-md font-sans text-base sm:text-lg font-light tracking-wide text-[#B8B1A8] leading-relaxed"
-                  data-testid="invitation-subheading"
-                >
-                  Tenk deg stearinlys, lavmælt jazz og noe utsøkt sushi.
-                  Detaljene kommer — men først, hva sier du?
-                </motion.p>
-
                 <motion.div
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.85, duration: 0.8, ease: "easeOut" }}
-                  className="mt-8 sm:mt-10 flex flex-col gap-3"
+                  initial={{ y: 10 }}
+                  animate={{ y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.65, ease: "easeOut" }}
+                  className="mt-6 flex flex-col gap-3"
                 >
-                  {CHOICES.map((c, idx) => (
-                    <ChoiceButton
+                  {CHOICES.map((c) => (
+                    <ChoiceCard
                       key={c.code}
                       choice={c}
-                      index={idx}
                       onClick={() => handleChoice(c.code)}
                       loading={status === "loading" && selected === c.code}
                       disabled={status === "loading"}
@@ -196,7 +205,7 @@ export default function Invitation() {
                   <motion.p
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="mt-4 text-sm text-rose-300/90"
+                    className="mt-3 text-xs text-rose-300/90 text-center"
                     data-testid="error-message"
                   >
                     {errorMsg}
@@ -206,30 +215,34 @@ export default function Invitation() {
             ) : (
               <motion.div
                 key="success"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ y: 16 }}
+                animate={{ y: 0 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.7, ease: "easeOut" }}
-                className="flex flex-col items-start gap-4 p-6 sm:p-8 bg-black/40 backdrop-blur-xl border border-white/10 rounded-sm"
+                transition={{ duration: 0.55, ease: "easeOut" }}
+                className="flex flex-col items-start gap-3 p-6 bg-black/55 backdrop-blur-xl border border-white/10 rounded-lg"
                 data-testid="success-message"
               >
                 <div className="flex items-center gap-2 text-[#D4AF37]">
-                  <Sparkles size={14} strokeWidth={1.5} />
-                  <span className="font-sans text-xs tracking-[0.3em] uppercase">
+                  <Sparkles size={12} strokeWidth={1.5} />
+                  <span className="font-sans text-[10px] tracking-[0.32em] uppercase">
                     Svar mottatt
                   </span>
                 </div>
-                <h2 className="font-serif text-3xl sm:text-4xl font-medium tracking-tight leading-tight text-[#FAF9F6]">
+                <h2
+                  className="font-serif font-medium tracking-tight leading-tight text-[#FAF9F6]"
+                  style={{ fontSize: "clamp(1.75rem, 7.5vw, 2.125rem)" }}
+                >
                   {SUCCESS_COPY[selected]?.title}
                 </h2>
-                <p className="font-sans text-base font-light text-[#B8B1A8] leading-relaxed">
+                <p className="font-sans text-[15px] font-light text-[#B8B1A8] leading-relaxed">
                   {SUCCESS_COPY[selected]?.body}
                 </p>
                 <button
                   onClick={reset}
-                  className="mt-2 font-sans text-xs tracking-[0.25em] uppercase text-[#B8B1A8] hover:text-[#FAF9F6] transition-colors"
+                  className="mt-2 inline-flex items-center gap-2 font-sans text-[11px] tracking-[0.28em] uppercase text-[#B8B1A8] active:text-[#FAF9F6] transition-colors"
                   data-testid="btn-reset"
                 >
+                  <RotateCcw size={12} strokeWidth={1.7} />
                   Endre svar
                 </button>
               </motion.div>
@@ -238,55 +251,91 @@ export default function Invitation() {
         </div>
       </div>
     </div>
+    </MotionConfig>
   );
 }
 
-function ChoiceButton({ choice, index, onClick, loading, disabled }) {
-  const base =
-    "group relative w-full rounded-sm py-4 px-5 sm:px-6 flex items-center justify-between transition-all duration-300 disabled:cursor-not-allowed";
+function ChoiceCard({ choice, onClick, loading, disabled }) {
+  const isPrimary = choice.variant === "primary";
+  const isSecondary = choice.variant === "secondary";
 
-  const variants = {
-    primary:
-      "bg-[#D4AF37] text-[#0A0A0A] shadow-[0_0_24px_rgba(212,175,55,0.25)] hover:bg-[#E6C255] hover:-translate-y-0.5 disabled:opacity-70",
-    secondary:
-      "bg-transparent border border-[#FAF9F6]/20 text-[#FAF9F6] backdrop-blur-md hover:bg-[#FAF9F6]/10 hover:-translate-y-0.5 disabled:opacity-60",
-    tertiary:
-      "bg-white/[0.04] border border-white/5 text-[#B8B1A8] hover:text-[#FAF9F6] hover:bg-white/[0.08] disabled:opacity-60",
-  };
+  const cardBg = isPrimary
+    ? "bg-black/55 border border-[#D4AF37]/40"
+    : isSecondary
+    ? "bg-black/45 border border-white/12"
+    : "bg-black/35 border border-white/8";
 
-  const labelClass =
-    choice.variant === "primary"
-      ? "font-sans text-sm sm:text-base font-semibold tracking-[0.12em] uppercase"
-      : choice.variant === "secondary"
-      ? "font-sans text-sm font-medium tracking-wide"
-      : "font-sans text-sm font-medium tracking-wide";
+  const codeColor = isPrimary
+    ? "text-[#D4AF37]"
+    : isSecondary
+    ? "text-[#D4AF37]/85"
+    : "text-[#B8B1A8]";
+
+  const titleColor = "text-[#FAF9F6]";
+
+  const bodyColor = isPrimary
+    ? "text-[#FAF9F6]/85"
+    : isSecondary
+    ? "text-[#B8B1A8]"
+    : "text-[#B8B1A8]/85";
+
+  const btnStyle = isPrimary
+    ? "bg-[#D4AF37] text-[#0A0A0A] active:bg-[#E6C255] shadow-[0_6px_22px_-8px_rgba(212,175,55,0.55)]"
+    : isSecondary
+    ? "bg-white/[0.08] border border-white/15 text-[#FAF9F6] active:bg-white/[0.15]"
+    : "bg-white/[0.04] border border-white/[0.08] text-[#B8B1A8] active:text-[#FAF9F6] active:bg-white/[0.08]";
+
+  const btnLabel = isPrimary
+    ? "Velg dette"
+    : isSecondary
+    ? "Velg dette"
+    : "Velg dette";
 
   return (
-    <motion.button
-      whileTap={{ scale: 0.98 }}
-      onClick={onClick}
-      disabled={disabled}
-      data-testid={choice.testid}
-      className={`${base} ${variants[choice.variant]}`}
+    <div
+      className={`relative w-full rounded-lg p-5 backdrop-blur-md ${cardBg}`}
     >
-      <span className="flex items-center gap-3">
+      <div className="flex items-baseline gap-3">
         <span
-          className={`font-serif text-lg italic ${
-            choice.variant === "primary" ? "text-[#0A0A0A]/70" : "text-[#D4AF37]"
-          }`}
+          className={`font-serif text-[26px] italic leading-none ${codeColor}`}
         >
-          {choice.code}.
+          {choice.code}
         </span>
-        <span className={labelClass}>{choice.label}</span>
-      </span>
-      {loading ? (
-        <Loader2 size={18} className="animate-spin opacity-80" />
-      ) : (
-        <ArrowUpRight
-          size={18}
-          className="opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
-        />
-      )}
-    </motion.button>
+        <h3
+          className={`font-sans text-[16px] font-semibold tracking-tight ${titleColor}`}
+        >
+          {choice.title}
+        </h3>
+      </div>
+      <p
+        className={`mt-3 font-sans text-[14px] font-light leading-relaxed ${bodyColor}`}
+      >
+        {choice.body}
+      </p>
+      <motion.button
+        whileTap={{ scale: 0.97 }}
+        onClick={onClick}
+        disabled={disabled}
+        data-testid={choice.testid}
+        className={`mt-4 w-full rounded-md py-3 px-4 flex items-center justify-center gap-2 transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-60 touch-manipulation select-none ${btnStyle}`}
+        style={{ minHeight: 48 }}
+      >
+        {loading ? (
+          <>
+            <Loader2 size={15} className="animate-spin" />
+            <span className="font-sans text-[12px] font-semibold tracking-[0.16em] uppercase">
+              Sender …
+            </span>
+          </>
+        ) : (
+          <>
+            <span className="font-sans text-[12px] font-semibold tracking-[0.16em] uppercase">
+              {btnLabel}
+            </span>
+            <ArrowUpRight size={15} className="opacity-80" />
+          </>
+        )}
+      </motion.button>
+    </div>
   );
 }
