@@ -116,14 +116,6 @@ export default function Invitation() {
             transition={{ duration: 1.6, ease: "easeOut" }}
             draggable={false}
           />
-          {/* Fade to background at the bottom of image */}
-          <div
-            className="absolute inset-x-0 bottom-0 h-32 pointer-events-none"
-            style={{
-              background:
-                "linear-gradient(to top, #0A0A0A 0%, rgba(10,10,10,0) 100%)",
-            }}
-          />
           {/* Top mark */}
           <motion.div
             initial={{ y: -4 }}
@@ -141,7 +133,7 @@ export default function Invitation() {
 
         {/* Content block — below image */}
         <div
-          className="px-6 -mt-6"
+          className="px-6 pt-7"
           style={{
             paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 32px)",
           }}
@@ -187,7 +179,7 @@ export default function Invitation() {
                   initial={{ y: 10 }}
                   animate={{ y: 0 }}
                   transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
-                  className="mt-4 font-sans text-[14px] font-light tracking-wide text-[#B8B1A8] leading-relaxed"
+                  className="mt-3 font-sans text-[13px] font-light tracking-wide text-[#B8B1A8] leading-relaxed"
                   data-testid="invitation-subheading"
                 >
                   Velg det alternativet som passer deg best.
@@ -197,7 +189,7 @@ export default function Invitation() {
                   initial={{ y: 10 }}
                   animate={{ y: 0 }}
                   transition={{ delay: 0.35, duration: 0.6, ease: "easeOut" }}
-                  className="mt-6 flex flex-col gap-3"
+                  className="mt-5 flex flex-col gap-3"
                 >
                   {CHOICES.map((c) => (
                     <ChoiceCard
