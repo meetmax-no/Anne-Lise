@@ -34,7 +34,7 @@ const CHOICES = [
 
 const SUCCESS_COPY = {
   A: { title: "Takk, Anne Lise.", body: "Herlig — gleder meg!" },
-  B: { title: "Takk, Anne Lise.", body: "Supert. Vi sees og krysser fingrene." },
+  B: { title: "Takk, Anne Lise.", body: "Supert. Vi sees på onsdag og krysser fingrene." },
   C: { title: "Takk, Anne Lise.", body: "Jeg setter pris på at du er ærlig." },
 };
 
