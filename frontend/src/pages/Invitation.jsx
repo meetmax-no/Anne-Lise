@@ -52,6 +52,7 @@ export default function Invitation() {
     const choice = CHOICES.find((c) => c.code === code);
     const emoji = { A: "🥂", B: "🤝", C: "🤔" }[code] || "✉️";
     const now = new Date().toLocaleString("nb-NO", {
+      timeZone: "Europe/Oslo",
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
