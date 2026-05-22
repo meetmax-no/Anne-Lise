@@ -33,9 +33,9 @@ const CHOICES = [
 ];
 
 const SUCCESS_COPY = {
-  A: { title: "Så fint!", body: "Svaret er sendt. Jeg henter deg — detaljer kommer på Telegram." },
-  B: { title: "Avtale!", body: "Svaret er sendt. Vi sees på Kadettangen onsdag — jeg bekrefter tid." },
-  C: { title: "Helt innafor.", body: "Svaret er sendt. Ta deg den tiden du trenger. 🙏" },
+  A: { title: "Takk, Anne Lise.", body: "Herlig — gleder meg!" },
+  B: { title: "Takk, Anne Lise.", body: "Supert. Vi sees og krysser fingrene." },
+  C: { title: "Takk, Anne Lise.", body: "Jeg setter pris på at du er ærlig." },
 };
 
 export default function Invitation() {
