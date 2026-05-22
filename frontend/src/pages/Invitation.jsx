@@ -5,8 +5,7 @@ import { ArrowUpRight, Sparkles, Loader2, RotateCcw } from "lucide-react";
 const TELEGRAM_BOT_TOKEN = process.env.REACT_APP_TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHAT_ID = process.env.REACT_APP_TELEGRAM_CHAT_ID;
 
-const HERO_IMAGE =
-  "https://customer-assets.emergentagent.com/job_date-decision/artifacts/fbbrzk35_AlexSushi.jpg";
+const HERO_IMAGE = "/hero.jpg";
 
 const CHOICES = [
   {
