@@ -13,17 +13,10 @@ const INTRO =
 const CHOICES = [
   {
     code: "A",
-    title: "YES — jeg er klar som et egg og gleder meg!",
+    title: "JA. Jeg pakker ullsokkene og gleder meg",
     testid: "btn-accept",
     variant: "primary",
     emoji: "🥂",
-  },
-  {
-    code: "B",
-    title: "Kommer senere",
-    testid: "btn-later",
-    variant: "secondary",
-    emoji: "⏳",
   },
 ];
 
@@ -32,16 +25,12 @@ const SUCCESS_COPY = {
     title: "Herlig!",
     body: "Takk, Anne Lise — jeg gleder meg vilt. Vi snakkes snart.",
   },
-  B: {
-    title: "Helt greit.",
-    body: "Takk for beskjeden. Jeg venter på svaret ditt.",
-  },
 };
 
 const DAYS = [
   {
     label: "Fredag",
-    date: "29. mai",
+    date: "9. juni",
     items: [
       { time: "08:00", text: "Avreise fra Hammerskogbakken" },
       {
@@ -60,7 +49,7 @@ const DAYS = [
   },
   {
     label: "Lørdag",
-    date: "30. mai",
+    date: "10. juni",
     items: [
       { time: "08:00", text: "Frokost" },
       {
@@ -73,7 +62,7 @@ const DAYS = [
   },
   {
     label: "Søndag",
-    date: "31. mai",
+    date: "11. juni",
     items: [
       { time: "08:00", text: "Frokost" },
       { time: "11:30", text: "Utsjekk og avreise retur Oslo" },
@@ -107,7 +96,7 @@ export default function Invitation() {
     const text =
       `${choice.emoji} <b>Anne Lise har svart!</b>\n\n` +
       `<b>Valg ${code} — ${choice.title}</b>\n\n` +
-      `🗓 Göteborg · 29. – 31. mai 2026\n` +
+      `🗓 Göteborg · 9. – 11. juni 2026\n` +
       `🕒 Svart ${now}`;
 
     if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
@@ -205,7 +194,7 @@ export default function Invitation() {
             >
               <span className="h-px w-6 bg-[#D4AF37]/60" />
               <span className="font-sans text-[11px] tracking-[0.28em] uppercase text-[#FAF9F6]">
-                29. – 31. mai 2026
+                9. – 11. juni 2026
               </span>
               <span className="h-px w-6 bg-[#D4AF37]/60" />
             </motion.div>
