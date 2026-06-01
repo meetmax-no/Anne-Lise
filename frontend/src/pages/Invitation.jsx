@@ -23,13 +23,13 @@ const CHOICES = [
 const SUCCESS_COPY = {
   A: {
     title: "Herlig!",
-    body: "Takk, Anne Lise — jeg gleder meg vilt. Vi snakkes snart.",
+    body: "Takk, Anne Lise ❤️ — jeg gleder meg allerede veldig mye til dette. 💋",
   },
 };
 
 const DAYS = [
   {
-    label: "Fredag",
+    label: "Tirsdag",
     date: "9. juni",
     items: [
       { time: "08:00", text: "Avreise fra Hammerskogbakken" },
@@ -48,7 +48,7 @@ const DAYS = [
     ],
   },
   {
-    label: "Lørdag",
+    label: "Onsdag",
     date: "10. juni",
     items: [
       { time: "08:00", text: "Frokost" },
@@ -61,7 +61,7 @@ const DAYS = [
     ],
   },
   {
-    label: "Søndag",
+    label: "Torsdag",
     date: "11. juni",
     items: [
       { time: "08:00", text: "Frokost" },
