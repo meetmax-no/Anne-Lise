@@ -146,12 +146,12 @@ export default function Invitation() {
           {/* HERO */}
           <div
             className="relative w-full overflow-hidden"
-            style={{ aspectRatio: "1 / 1" }}
+            style={{ aspectRatio: "4 / 5" }}
           >
             <motion.img
               src={HERO_IMAGE}
               alt="Göteborg"
-              className="absolute inset-0 h-full w-full object-cover object-center"
+              className="absolute inset-0 h-full w-full object-cover object-top"
               initial={{ scale: 1.06 }}
               animate={{ scale: 1 }}
               transition={{ duration: 1.6, ease: "easeOut" }}
