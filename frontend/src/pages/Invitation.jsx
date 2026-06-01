@@ -6,6 +6,34 @@ const HERO_IMAGE = "/hero.jpg";
 const INTRO =
   "Da er vi klare for å sette kursen mot Göteborg. Helgen er satt av til å nyte god mat, kikke på folkelivet, gå hånd i hånd og rett og slett bli enda bedre kjent.";
 
+const CHOICES = [
+  {
+    code: "A",
+    title: "YES — jeg er klar som et egg og gleder meg!",
+    testid: "btn-accept",
+    variant: "primary",
+    emoji: "🥂",
+  },
+  {
+    code: "B",
+    title: "Kommer senere",
+    testid: "btn-later",
+    variant: "secondary",
+    emoji: "⏳",
+  },
+];
+
+const SUCCESS_COPY = {
+  A: {
+    title: "Herlig!",
+    body: "Takk, Anne Lise — jeg gleder meg vilt. Vi snakkes snart.",
+  },
+  B: {
+    title: "Helt greit.",
+    body: "Takk for beskjeden. Jeg venter på svaret ditt.",
+  },
+};
+
 const DAYS = [
   {
     label: "Fredag",
@@ -53,6 +81,68 @@ const DAYS = [
 ];
 
 export default function Invitation() {
+  const [status, setStatus] = useState("idle"); // idle | loading | success | error
+  const [selected, setSelected] = useState(null);
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const handleChoice = async (code) => {
+    if (status === "loading") return;
+    setSelected(code);
+    setStatus("loading");
+    setErrorMsg("");
+
+    const choice = CHOICES.find((c) => c.code === code);
+    const now = new Date().toLocaleString("nb-NO", {
+      timeZone: "Europe/Oslo",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    const text =
+      `${choice.emoji} <b>Anne Lise har svart!</b>\n\n` +
+      `<b>Valg ${code} — ${choice.title}</b>\n\n` +
+      `🗓 Göteborg · 29. – 31. mai 2026\n` +
+      `🕒 Svart ${now}`;
+
+    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+      console.info("[Test-modus] Telegram ikke konfigurert. Ville sendt:", text);
+      setTimeout(() => setStatus("success"), 600);
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: TELEGRAM_CHAT_ID,
+            text,
+            parse_mode: "HTML",
+          }),
+        }
+      );
+      const data = await res.json();
+      if (!res.ok || !data.ok) {
+        throw new Error(data.description || "Telegram API feilet");
+      }
+      setStatus("success");
+    } catch (err) {
+      console.error(err);
+      setErrorMsg("Kunne ikke sende svaret. Prøv igjen om litt.");
+      setStatus("error");
+    }
+  };
+
+  const reset = () => {
+    setSelected(null);
+    setStatus("idle");
+    setErrorMsg("");
+  };
+
   return (
     <MotionConfig reducedMotion="never">
       <div
@@ -138,6 +228,82 @@ export default function Invitation() {
               ))}
             </motion.div>
 
+            {/* Response section */}
+            <motion.div
+              initial={{ y: 10 }}
+              animate={{ y: 0 }}
+              transition={{ delay: 0.5, duration: 0.65, ease: "easeOut" }}
+              className="mt-10"
+            >
+              <AnimatePresence mode="wait">
+                {status !== "success" ? (
+                  <motion.div
+                    key="idle"
+                    initial={{ opacity: 1 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    <p className="text-center font-sans text-[12px] tracking-[0.28em] uppercase text-[#D4AF37]">
+                      Si fra
+                    </p>
+                    <div className="mt-4 flex flex-col gap-3">
+                      {CHOICES.map((c) => (
+                        <ResponseButton
+                          key={c.code}
+                          choice={c}
+                          onClick={() => handleChoice(c.code)}
+                          loading={status === "loading" && selected === c.code}
+                          disabled={status === "loading"}
+                        />
+                      ))}
+                    </div>
+                    {status === "error" && (
+                      <p
+                        className="mt-3 text-xs text-rose-300/90 text-center"
+                        data-testid="error-message"
+                      >
+                        {errorMsg}
+                      </p>
+                    )}
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="success"
+                    initial={{ y: 16 }}
+                    animate={{ y: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.55, ease: "easeOut" }}
+                    className="flex flex-col items-start gap-3 p-6 bg-white/[0.04] border border-white/10 rounded-lg"
+                    data-testid="success-message"
+                  >
+                    <div className="flex items-center gap-2 text-[#D4AF37]">
+                      <Sparkles size={12} strokeWidth={1.5} />
+                      <span className="font-sans text-[10px] tracking-[0.32em] uppercase">
+                        Svar mottatt
+                      </span>
+                    </div>
+                    <h2
+                      className="font-serif font-medium tracking-tight leading-tight text-[#FAF9F6]"
+                      style={{ fontSize: "clamp(1.625rem, 7vw, 2rem)" }}
+                    >
+                      {SUCCESS_COPY[selected]?.title}
+                    </h2>
+                    <p className="font-sans text-[14px] font-light text-[#B8B1A8] leading-relaxed">
+                      {SUCCESS_COPY[selected]?.body}
+                    </p>
+                    <button
+                      onClick={reset}
+                      className="mt-2 inline-flex items-center gap-2 font-sans text-[11px] tracking-[0.28em] uppercase text-[#B8B1A8] active:text-[#FAF9F6] transition-colors"
+                      data-testid="btn-reset"
+                    >
+                      <RotateCcw size={12} strokeWidth={1.7} />
+                      Endre svar
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+
             {/* Closing flourish */}
             <motion.div
               initial={{ y: 10 }}
@@ -220,5 +386,41 @@ function DayBlock({ day }) {
         ))}
       </ul>
     </section>
+  );
+}
+
+
+function ResponseButton({ choice, onClick, loading, disabled }) {
+  const isPrimary = choice.variant === "primary";
+
+  const style = isPrimary
+    ? "bg-[#D4AF37] text-[#0A0A0A] shadow-[0_10px_28px_-10px_rgba(212,175,55,0.55)] active:bg-[#E6C255] disabled:opacity-70"
+    : "bg-white/[0.06] border border-white/15 text-[#FAF9F6] backdrop-blur-md active:bg-white/[0.12] disabled:opacity-60";
+
+  const codeColor = isPrimary ? "text-[#0A0A0A]/55" : "text-[#D4AF37]";
+
+  return (
+    <motion.button
+      whileTap={{ scale: 0.98 }}
+      onClick={onClick}
+      disabled={disabled}
+      data-testid={choice.testid}
+      className={`group relative w-full rounded-lg px-5 py-4 flex items-center gap-3 text-left transition-colors duration-300 disabled:cursor-not-allowed touch-manipulation select-none ${style}`}
+      style={{ minHeight: 60 }}
+    >
+      <span className={`font-serif text-[22px] italic leading-none ${codeColor}`}>
+        {choice.code}
+      </span>
+      <span className="flex-1 font-sans text-[14px] font-semibold tracking-tight">
+        {choice.title}
+      </span>
+      <span className="shrink-0">
+        {loading ? (
+          <Loader2 size={16} className="animate-spin opacity-80" />
+        ) : (
+          <ArrowUpRight size={16} className="opacity-80" />
+        )}
+      </span>
+    </motion.button>
   );
 }
