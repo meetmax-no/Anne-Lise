@@ -1,5 +1,9 @@
-import { motion, MotionConfig } from "framer-motion";
-import { Sparkles, ExternalLink, Moon } from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence, MotionConfig } from "framer-motion";
+import { Sparkles, ExternalLink, Moon, ArrowUpRight, Loader2, RotateCcw } from "lucide-react";
+
+const TELEGRAM_BOT_TOKEN = process.env.REACT_APP_TELEGRAM_BOT_TOKEN;
+const TELEGRAM_CHAT_ID = process.env.REACT_APP_TELEGRAM_CHAT_ID;
 
 const HERO_IMAGE = "/hero.jpg";
 
