@@ -146,7 +146,7 @@ export default function Invitation() {
           {/* HERO */}
           <div
             className="relative w-full overflow-hidden"
-            style={{ aspectRatio: "5 / 4" }}
+            style={{ aspectRatio: "5.5 / 4" }}
           >
             <motion.img
               src={HERO_IMAGE}
